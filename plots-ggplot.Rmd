@@ -7,3 +7,51 @@ output: html_document
 # Plots with ggplot2
 
 We are going to make plots in R and it's going to be amazing.
+```{r libraries}
+library(tidyverse)
+library(readxl)
+library(here)
+```
+```{r read in files}
+ca_np <- read_csv(here("data", "ca_np.csv"))
+
+names(ca_np) #see variable names
+head(ca_np) #see first X rows (6 is default)
+summary(ca_np) #see a summary of each variable
+
+ci_np <- read_excel(here("data", "ci_np.xlsx"))
+```
+
+```{r plots}
+ggplot(data = ci_np, aes(x = year, y = visitors)) +
+  geom_line()
+
+gg_base <- ggplot(data = ci_np, aes(x = year, y = visitors)) #storing as an object to avoid retyping
+
+gg_base +
+  geom_col() #make it a column graph
+
+gg_base +
+  geom_line(
+    color = "purple",
+    linetype = "dashed"
+  )
+
+gg_base + 
+  geom_point(color = "purple",
+             pch = 17,
+             size = 4,
+             alpha = 0.5)
+
+gg_base + 
+  geom_point(
+    aes(size = visitors, #size and color of points change
+        color = visitors), #based on number of visitors
+    alpha = 0.5 #opacity stays the same regardless (still within geom_point layer)
+  )
+#to update aesthetics based on a variable, put that argument inside aes
+
+gg_base + 
+  geom_col(aes(fill = visitors))
+```
+
